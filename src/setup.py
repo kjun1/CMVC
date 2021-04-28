@@ -19,7 +19,7 @@ setup(
     url="https://github.com/kjun1/CMVC",
     packages=find_packages("cmvc"),
     package_dir={"": "cmvc"},
-    py_modules=[splitext(basename(path))[0] for path in glob('cmvc/*.py')],
+    py_modules=[splitext(basename(path))[0] for path in glob('/*.py')],
     include_package_data=True,
     zip_safe=False,
     install_requires=_requires_from_file('requirements.txt'),
