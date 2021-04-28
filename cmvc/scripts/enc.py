@@ -1,5 +1,5 @@
 from torch import nn
-from cmvc.layer import *
+from cmvc.scripts.layer import *
 
 
 

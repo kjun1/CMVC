@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: cmvc
+Version: 0.1.0
+Summary: "パッケージの説明を書く"
+Home-page: "https://github.com/kjun1/CMVC"
+Author: "Kenya Maejima"
+Author-email: "p.k.maejima1211@icloud.com"
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
