@@ -1,0 +1,7 @@
+setup.py
+cmvc/cmvc.egg-info/PKG-INFO
+cmvc/cmvc.egg-info/SOURCES.txt
+cmvc/cmvc.egg-info/dependency_links.txt
+cmvc/cmvc.egg-info/not-zip-safe
+cmvc/cmvc.egg-info/requires.txt
+cmvc/cmvc.egg-info/top_level.txt
