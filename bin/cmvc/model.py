@@ -1,6 +1,7 @@
 from torch import nn
-from cmvc import *
-
+from cmvc.layer import *
+from cmvc.enc import *
+from cmvc.dec import *
 
 
 
