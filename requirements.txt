@@ -1,5 +1,0 @@
-###### Requirements without Version Specifiers ######`
-torch
-
-
-###### Requirements with Version Specifiers ######`
