@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "cmvc"
+version = "0.1.0"
+description = ""
+authors = ["kjun1 <p.k.maejima1211@icloud.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+torch = "^1.8.1"
+
+[tool.poetry.dev-dependencies]
+jupyterlab = "^3.0.14"
+flake8 = "^3.9.1"
+yapf = "^0.31.0"
+isort = "^5.8.0"
+sphinx-rtd-theme = "^0.5.2"
+Sphinx = "^3.5.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
