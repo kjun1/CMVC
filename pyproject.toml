@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cmvc"
-version = "0.0.2"
+version = "0.0.2-dev"
 description = "This is a voice conversion model implemented in PyTorch."
 authors = ["kjun1 <p.k.maejima1211@icloud.com>"]
 readme = "README.md"
@@ -11,6 +11,8 @@ repository = "https://github.com/kjun1/CMVC"
 python = "^3.7"
 torch = "^1.8.1"
 toml = "^0.10.2"
+pyworld = "^0.2.12"
+pysptk = "^0.1.18"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.0.14"
