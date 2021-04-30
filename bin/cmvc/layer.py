@@ -137,3 +137,14 @@ class ReshapeLayer(nn.Module):
     sizes = x.size()
     h = int((sizes[1]/out_channel)**0.5)
     return x.view(sizes[0],  out_channel, h, h)
+
+
+
+from math import ceil
+
+def p(kernel_size, stride):
+    if kernel_size == stride:
+        return 0
+    
+    else:
+        return ceil((kernel_size-1)/stride)

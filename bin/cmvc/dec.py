@@ -9,7 +9,6 @@ class UttrDecoder(nn.Module):
   def __init__(self):
 
     super().__init__()
-
     self.uttr_dec_d1 = DBGLayer(in_channels=8,
                                 out_channels=16,
                                 kernel_size=(9,5),

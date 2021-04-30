@@ -10,6 +10,7 @@ repository = "https://github.com/kjun1/CMVC"
 [tool.poetry.dependencies]
 python = "^3.7"
 torch = "^1.8.1"
+toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.0.14"

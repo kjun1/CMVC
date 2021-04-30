@@ -4,17 +4,6 @@ from cmvc.layer import *
 
 
 
-
-from math import ceil
-
-def p(kernel_size, stride):
-    if kernel_size == stride:
-        return 0
-    
-    else:
-        return ceil((kernel_size-1)/stride)
-
-
     
 class UttrEncoder(nn.Module):
   def __init__(self):
