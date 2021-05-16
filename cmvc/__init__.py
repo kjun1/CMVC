@@ -1,1 +1,1 @@
-from cmvc.scripts import *
+from cmvc.models import *

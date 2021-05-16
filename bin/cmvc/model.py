@@ -3,7 +3,7 @@ from cmvc.layer import *
 from cmvc.enc import *
 from cmvc.dec import *
 
-
+device = "cpu"
 
 
 class Net(nn.Module):

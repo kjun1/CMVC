@@ -2,7 +2,7 @@ from torch import nn
 from cmvc.layer import *
 
 
-
+device = "cpu"
 
 
 class UttrDecoder(nn.Module):

@@ -1,7 +1,7 @@
 from torch import nn 
 
 
-
+device = "cpu"
 
 
 class CBGLayer(nn.Module):

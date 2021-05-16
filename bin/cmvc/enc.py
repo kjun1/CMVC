@@ -6,6 +6,7 @@ from cmvc.layer import *
 
     
 class UttrEncoder(nn.Module):
+  device = "cpu"
   def __init__(self):
 
     super().__init__()
