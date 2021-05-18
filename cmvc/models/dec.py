@@ -129,6 +129,12 @@ class FaceDecoder(nn.Module):
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, y):
-        mean, log_var = self.face_decoder(y)
-        z = self.face_sample_z(mean, log_var)
-        return z
+        l = []
+        for i in range(y.size()[-1]):
+            k = y[:,:,:,i].squeeze(-1)
+            mean, log_var = self.face_decoder(k)
+            z = self.face_sample_z(mean, log_var)
+            l.append(z)
+        
+        l = torch.stack(l, dim=-1)
+        return l

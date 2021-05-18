@@ -133,12 +133,13 @@ class FaceEncoder(nn.Module):
         顔面の潜在変数出すやつ
         """
         epsilon = torch.randn(mean.shape)#.to(device)
-        return mean + torch.exp(log_var) * epsilon
+        z = mean + torch.exp(log_var) * epsilon
+        z = z.unsqueeze(-1).unsqueeze(-1)
+        return z
 
     def forward(self, y):
         mean, log_var = self.face_encoder(y)
         z = self.face_sample_z(mean, log_var)
-        z = z.unsqueeze(-1).unsqueeze(-1)
         return z
 
 
