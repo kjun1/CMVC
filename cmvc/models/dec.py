@@ -99,7 +99,7 @@ class FaceDecoder(nn.Module):
                                     out_channels=32,
                                     kernel_size=(6, 6),
                                     stride=(2, 2),
-                                    padding=(2, 2))
+                                    padding=(4, 4))
 
         self.face_dec_d8 = nn.Conv2d(in_channels=32,
                                      out_channels=6,
@@ -129,6 +129,13 @@ class FaceDecoder(nn.Module):
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, y):
+        mean, log_var = self.face_decoder(y)
+        z = self.face_sample_z(mean, log_var)
+        return z
+
+
+""" 
+    def forward(self, y):
         l = []
         for i in range(y.size()[-1]):
             k = y[:,:,:,i].squeeze(-1)
@@ -138,3 +145,5 @@ class FaceDecoder(nn.Module):
         
         l = torch.stack(l, dim=-1)
         return l
+"""
+   
