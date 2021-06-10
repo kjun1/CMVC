@@ -4,6 +4,8 @@ import librosa
 import numpy as np
 import pandas as pd
 
+
+
 dict_toml = toml.load(open('cmvc/config.toml'))
 
 
@@ -22,17 +24,17 @@ fs = 22050
 
 # inputファイル認識
 
-for i in os.listdir(eval_path):
+for i in os.listdir(train_path):
     if i[:3] != "VCC":
         continue
     # ファイルのやつ　train_path+i
-    os.makedirs(output_path+"eval/"+i, exist_ok=True)
+    os.makedirs(output_path+"train/"+i, exist_ok=True)
 
-    for j in os.listdir(eval_path+i):
-        x, fs = librosa.load(eval_path+i+"/"+j, sr=fs, dtype=np.float64)# dtypeを忘れずに
+    for j in os.listdir(train_path+i):
+        x, fs = librosa.load(train_path+i+"/"+j, sr=fs, dtype=np.float64)# dtypeを忘れずに
         mccs = librosa.feature.melspectrogram(y=x, sr=fs, n_mels=36)
         #print(output_path+"train/"+i+j[:-4])
-        pd.to_pickle(mccs, output_path+"eval/"+i+"/"+j[:-4]+".pkl")
+        pd.to_pickle(mccs, output_path+"train/"+i+"/"+j[:-4]+".pkl")
 # 保存
 
 
