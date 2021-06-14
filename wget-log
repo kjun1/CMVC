@@ -1,0 +1,6 @@
+--2021-06-14 05:46:51--  https://drive.google.com/uc?export=download
+Resolving www-proxy.waseda.jp (www-proxy.waseda.jp)... 133.9.4.20
+Connecting to www-proxy.waseda.jp (www-proxy.waseda.jp)|133.9.4.20|:8080... connected.
+Proxy request sent, awaiting response... 400 Bad Request
+2021-06-14 05:46:52 ERROR 400: Bad Request.
+
