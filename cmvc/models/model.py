@@ -24,13 +24,13 @@ class Net(nn.Module):
 
     def loss(self, x, y):
         ue_mean, ue_log_var = self.ue.uttr_encoder(x)
-        print(torch.sum(ue_mean), torch.sum(torch.exp(ue_log_var)))
+        #print(torch.sum(ue_mean), torch.sum(torch.exp(ue_log_var)))
         ue_KL = -0.5 * torch.sum(1 + ue_log_var - ue_mean**2 - torch.exp(ue_log_var))
         
         z = self.ue.uttr_sample_z(ue_mean, ue_log_var)
 
         fe_mean, fe_log_var = self.fe.face_encoder(y)
-        print(torch.sum(fe_mean), torch.sum(torch.exp(fe_log_var)))
+        #print(torch.sum(fe_mean), torch.sum(torch.exp(fe_log_var)))
         fe_KL = -0.5 * torch.sum(1 + fe_log_var - fe_mean**2 - torch.exp(fe_log_var))
         
         c = self.fe.face_sample_z(fe_mean, fe_log_var)
@@ -65,8 +65,8 @@ class Net(nn.Module):
         """
         reconstruction_MSE(uttr, face, voice) + KL_divergence(uttr, face)
         """
-        print(ue_KL, fe_KL, uttr_MSE, face_MSE)
-        print(sum(l))
+        #print(ue_KL, fe_KL, uttr_MSE, face_MSE)
+        #print(sum(l))
         lower_bound = [ue_KL, fe_KL, uttr_MSE, face_MSE]
         lower_bound.extend(l)
         
