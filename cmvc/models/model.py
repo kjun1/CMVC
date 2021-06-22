@@ -37,7 +37,7 @@ class Net(nn.Module):
   
         x_hat = self.ud(z, c)
         
-        #print(x.shape, x_hat.shape) 
+        x = x.expand(x_hat.shape) 
         uttr_MSE = F.mse_loss(x, x_hat)
 
         #print(c.size())
