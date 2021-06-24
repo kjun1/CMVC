@@ -32,6 +32,9 @@ class UttrDecoder(nn.Module):
                                               kernel_size=(3, 9),
                                               stride=(1, 1),
                                               padding=(1, 4))
+        
+    def _device(self):
+        return self.uttr_dec_d1.deconv1.weight.device
 
     def uttr_decoder(self, z, c):
         # print(z.size())
@@ -58,7 +61,8 @@ class UttrDecoder(nn.Module):
 
     def uttr_sample_z(self, mean, log_var):
 
-        epsilon = torch.randn(mean.shape)#.to(device)
+        device = self._device()
+        epsilon = torch.randn(mean.shape).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, z, c):
@@ -106,6 +110,9 @@ class FaceDecoder(nn.Module):
                                      kernel_size=(5, 5),
                                      stride=(1, 1))
 
+    def _device(self):
+        return self.face_dec_d1[0].weight.device
+    
     def face_decoder(self, c):
 
         y = self.face_dec_d1(c)
@@ -125,7 +132,8 @@ class FaceDecoder(nn.Module):
         """
         顔面の潜在変数出すやつ
         """
-        epsilon = torch.randn(mean.shape)#.to(device)
+        device = self._device()
+        epsilon = torch.randn(mean.shape).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, y):

@@ -4,7 +4,7 @@ from torch import nn
 from cmvc.models.layer import CBGLayer, CBLLayer, FlattenLayer
 
 from math import ceil
-
+from collections import OrderedDict
 
 def p(kernel_size, stride):
     if kernel_size == stride:
@@ -41,6 +41,8 @@ class UttrEncoder(nn.Module):
                                      kernel_size=(9, 5),
                                      stride=(9, 1),
                                      padding=(0, 2))
+    def _device(self):
+        return self.uttr_enc_d1.conv1.weight.device
 
     def uttr_encoder(self, x):
         """
@@ -60,7 +62,8 @@ class UttrEncoder(nn.Module):
         """
         潜在変数出すやつ
         """
-        epsilon = torch.randn(mean.shape)#.to(device)
+        device = self._device()
+        epsilon = torch.randn(mean.shape).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, x):
@@ -74,11 +77,13 @@ class FaceEncoder(nn.Module):
 
         super().__init__()
         self.face_enc_d1 = nn.Sequential(
-            nn.Conv2d(in_channels=3,
+            OrderedDict([
+            ("conv", nn.Conv2d(in_channels=3,
                       out_channels=32,
                       kernel_size=(6, 6),
                       stride=(2, 2),
-                      padding=(2, 2)), nn.LeakyReLU())
+                      padding=(2, 2))), 
+            ("lReLU", nn.LeakyReLU())]))
 
         self.face_enc_d2 = CBLLayer(in_channels=32,
                                     out_channels=64,
@@ -109,6 +114,10 @@ class FaceEncoder(nn.Module):
         self.face_enc_d7 = nn.Sequential(nn.Linear(256, 256), nn.LeakyReLU())
 
         self.face_enc_d8 = nn.Sequential(nn.Linear(256, 16), nn.LeakyReLU())
+        
+    def _device(self):
+        return self.face_enc_d1.conv.weight.device
+    
 
     def face_encoder(self, y):
         """
@@ -132,7 +141,8 @@ class FaceEncoder(nn.Module):
         """
         顔面の潜在変数出すやつ
         """
-        epsilon = torch.randn(mean.shape)#.to(device)
+        device = self._device()
+        epsilon = torch.randn(mean.shape).to(device)
         z = mean + torch.exp(log_var) * epsilon
         z = z.unsqueeze(-1).unsqueeze(-1)
         return z
@@ -188,6 +198,9 @@ class VoiceEncoder(nn.Module):
                                       kernel_size=(1, 5),
                                       stride=(1, 1),
                                       padding=(0, 2))
+    def _device(self):
+        return self.voice_enc_d1.conv1.weight.device
+
 
     def voice_encoder(self, x):
         """
@@ -211,7 +224,8 @@ class VoiceEncoder(nn.Module):
         """
         音声の潜在変数出すやつ
         """
-        epsilon = torch.randn(mean.shape)#.to(device)
+        device = self._device()
+        epsilon = torch.randn(mean.shape).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, x):
