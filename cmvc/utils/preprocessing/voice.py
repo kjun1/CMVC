@@ -6,7 +6,7 @@ import pandas as pd
 
 
 
-dict_toml = toml.load(open('cmvc/config.toml'))
+dict_toml = toml.load(open('/home/jun/Documents/CMVC/cmvc/config.toml'))
 
 
 voice_path = dict_toml["path"]["dataset"]["voice"]

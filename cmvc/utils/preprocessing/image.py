@@ -3,7 +3,7 @@ import os
 import cv2
 import numpy as np
 
-dict_toml = toml.load(open('../config.toml'))
+dict_toml = toml.load(open('/home/jun/Documents/CMVC/cmvc/config.toml'))
 cascade_path = dict_toml["path"]["cascades"] + "/haarcascade_frontalface_default.xml"
 
 
