@@ -14,10 +14,10 @@ class VoiceTrans(object):
         """
         最大値を1, 最小値を0とする変換
         """
-        array -= self.mini
-        array /= self.maxi
+        a = array - self.mini
+        a = a / self.maxi
     
-        return array
+        return a
     
     def cut(self, voice):
         """
@@ -32,7 +32,12 @@ class VoiceTrans(object):
         transした値を返す
         """
         return self.cut(self.norm_voice(sample))
-
+    
+    def inv_trans(self, sample):
+        a = sample * self.maxi
+        a = a + self.mini
+        
+        return a
 
 
 
@@ -57,3 +62,6 @@ class ImageTrans(object):
         transした値を返す
         """
         return self.norm_image(sample).T
+    
+    def inv_trans(self, sample):
+        return 255*sample.T

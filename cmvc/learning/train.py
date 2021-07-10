@@ -22,11 +22,23 @@ def collate_fn(batch):
     return voices, images
 
 def train_net(net, train_loader,
-             optimizer_cls=optim.Adam,
-             n_iter=10, device="cpu"):
+             optimizer,
+             n_iter=10, device="cpu",
+             state=None, model_dir=None):
     train_losses = []
     
-    optimizer = optimizer_cls(net.parameters(), lr=0.001)
+    d = list(model_dir.iterdir())
+    if d:
+        now_iter = max([int(i.stem) for i in d])
+        
+        checkpoint = torch.load(model_dir/(str(now_iter).zfill(4)+".cpt"))
+        net.load_state_dict(checkpoint['net'])
+        optimizer.load_state_dict(checkpoint['optimizer'])
+
+        print(now_iter)
+    else:
+        now_iter = 1
+
     for epoch in range(n_iter):
         running_loss = 0.0
         
@@ -49,12 +61,14 @@ def train_net(net, train_loader,
             running_loss += losses.item()
         
         
-        train_losses.append(running_loss / i)
-        
-        print(epoch, train_losses[-1], flush=True)
+        train_losses.append(running_loss / (i+1))
+        if (model_dir and state):
+            file_path = model_dir / (str(epoch + now_iter).zfill(4) + ".cpt")
+            torch.save(state,  file_path)
+        print(epoch+now_iter, train_losses[-1], flush=True)
 
 
-device = "cpu"
+device = "cuda"
 
 dict_toml = toml.load(open('/home/jun/Documents/CMVC/cmvc/config.toml'))
 
@@ -64,11 +78,21 @@ voice_path = dict_toml["path"]["dataset"]["processing"]["voice"]
 
 dataset = PairDataset(voice_path=voice_path , train=True, image_path=image_path)
 
-batch_size = 32
+batch_size = 64
 
 trainloader = torch.utils.data.DataLoader(dataset, batch_size = batch_size, shuffle = False, num_workers = 0, collate_fn = collate_fn)
+
 net = Net()
-        
-        
+optimizer = optim.Adam(net.parameters(), lr=0.001)
+
+print(device)
+
 net.to(device)
-train_net(net, trainloader)
+
+state = {
+    'net': net.state_dict(),
+    'optimizer': optimizer.state_dict(),
+}
+model_dir = pathlib.Path('/home/jun/Documents/CMVC/checkpoint')
+
+train_net(net, trainloader, optimizer, n_iter=1000, device=device, state=state, model_dir=model_dir)

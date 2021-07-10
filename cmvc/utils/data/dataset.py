@@ -13,7 +13,7 @@ from . import transform
 class PairDataset(torch.utils.data.Dataset):
     
 
-    def __init__(self, voice_path, train, image_path):
+    def __init__(self, voice_path, image_path, train=True):
         # path定義
         p = pathlib.Path(voice_path)
         if train:
@@ -25,16 +25,16 @@ class PairDataset(torch.utils.data.Dataset):
         
         
         voice_dir = [i for i in self.voice_path.iterdir() if i.is_dir()]       
-        voice_file = list(itertools.chain.from_iterable([[j for j in i.iterdir()] for i in voice_dir]))
+        self.voice_file = list(itertools.chain.from_iterable([[j for j in i.iterdir()] for i in voice_dir]))
         
-        voice_data = [pd.read_pickle(i) for i in voice_file]
-        self.voice_label = [1 if "M" == str(i.parent)[-2] else -1 for i in voice_file]
+        self.voice_data = [pd.read_pickle(i) for i in self.voice_file]
+        self.voice_label = [1 if "M" == str(i.parent)[-2] else -1 for i in self.voice_file]
         
-        k = np.concatenate(voice_data,axis=1)
+        k = np.concatenate(self.voice_data,axis=1)
         self.voice_transform = transform.VoiceTrans(k.max(), k.min())
         
         
-        self.voice_data = [torch.tensor([[self.voice_transform(i)]], dtype=torch.float32) for i in voice_data]
+        self.voice_data = [torch.tensor([[self.voice_transform(i)]], dtype=torch.float32) for i in self.voice_data]
         
         
         
@@ -63,17 +63,20 @@ class PairDataset(torch.utils.data.Dataset):
     def __len__(self):
         return self.datanum
 
-    def __getitem__(self, idx):
-
+    def __getitem__(self, idx, k=2):
+        
+        d = self.voice_file[idx]
         out_voice_data = self.voice_data[idx]
         out_label = self.voice_label[idx]
         
-        k = 2
         if out_label == 1:
             c = sample(self.image_label_male, k)
         else:
             c = sample(self.image_label_female, k)
+        
         out_image_data = torch.stack([self.image_data[i] for i in c])
         
+        print(c)
+        print(d)
 
         return out_voice_data, out_image_data, out_label

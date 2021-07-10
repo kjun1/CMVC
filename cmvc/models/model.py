@@ -16,9 +16,10 @@ class Net(nn.Module):
         self.ve = VoiceEncoder()
 
     def forward(self, x, y):
-        z = self.ue(x)
-        c = self.fe(y)
-        x_hat = self.ud(z, c)
+        z = self.ue.uttr_encoder(x)[0]
+        c = self.fe.face_encoder(y)[0]
+        c = c.unsqueeze(-1).unsqueeze(-1)
+        x_hat = self.ud.uttr_decoder(z, c)[0]
         
         return x_hat
 
