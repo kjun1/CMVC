@@ -4,7 +4,9 @@ import librosa
 import numpy as np
 import pandas as pd
 
-
+from pathlib import Path
+from cmvc.utils.data.voice import Wave
+from tqdm import tqdm
 
 dict_toml = toml.load(open('/home/jun/Documents/CMVC/cmvc/config.toml'))
 
@@ -24,17 +26,15 @@ fs = 22050
 
 # inputファイル認識
 
-for i in os.listdir(train_path):
+for i in tqdm(os.listdir(eval_path)):
     if i[:3] != "VCC":
         continue
     # ファイルのやつ　train_path+i
-    os.makedirs(output_path+"train/"+i, exist_ok=True)
+    os.makedirs(output_path+"eval/"+i, exist_ok=True)
 
-    for j in os.listdir(train_path+i):
-        x, fs = librosa.load(train_path+i+"/"+j, sr=fs, dtype=np.float64)# dtypeを忘れずに
-        mccs = librosa.feature.melspectrogram(y=x, sr=fs, n_mels=36)
-        #print(output_path+"train/"+i+j[:-4])
-        pd.to_pickle(mccs, output_path+"train/"+i+"/"+j[:-4]+".pkl")
+    for j in os.listdir(eval_path+i):
+        wave = Wave(wave_name=j, person_name=i, path=Path(i+"/"+j), data_path=Path(eval_path), ex_mc=True, ex_mfcc=True)
+        pd.to_pickle(wave, output_path+"eval/"+i+"/"+j[:-4]+".pkl")
 # 保存
 
 

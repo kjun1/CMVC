@@ -63,7 +63,7 @@ class UttrEncoder(nn.Module):
         潜在変数出すやつ
         """
         device = self._device()
-        epsilon = torch.randn(mean.shape).to(device)
+        epsilon = torch.randn(mean.shape, dtype=torch.float32).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, x):
@@ -142,7 +142,7 @@ class FaceEncoder(nn.Module):
         顔面の潜在変数出すやつ
         """
         device = self._device()
-        epsilon = torch.randn(mean.shape).to(device)
+        epsilon = torch.randn(mean.shape, dtype=torch.float32).to(device)
         z = mean + torch.exp(log_var) * epsilon
         z = z.unsqueeze(-1).unsqueeze(-1)
         return z
@@ -225,7 +225,7 @@ class VoiceEncoder(nn.Module):
         音声の潜在変数出すやつ
         """
         device = self._device()
-        epsilon = torch.randn(mean.shape).to(device)
+        epsilon = torch.randn(mean.shape, dtype=torch.float32).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, x):

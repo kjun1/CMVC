@@ -51,6 +51,7 @@ def train_net(net, train_loader,
             for batch in range(len(xx)):
                 voice = xx[batch].to(device)
                 image = yy[batch].to(device)
+                #print(voice.shape, image.shape)
                 loss = net.loss(voice, image)
                 losses += loss
             
@@ -68,7 +69,7 @@ def train_net(net, train_loader,
         print(epoch+now_iter, train_losses[-1], flush=True)
 
 
-device = "cuda"
+device = "cpu"
 
 dict_toml = toml.load(open('/home/jun/Documents/CMVC/cmvc/config.toml'))
 
@@ -78,11 +79,12 @@ voice_path = dict_toml["path"]["dataset"]["processing"]["voice"]
 
 dataset = PairDataset(voice_path=voice_path , train=True, image_path=image_path)
 
-batch_size = 64
+batch_size = 1
 
 trainloader = torch.utils.data.DataLoader(dataset, batch_size = batch_size, shuffle = False, num_workers = 0, collate_fn = collate_fn)
 
 net = Net()
+#net.float()
 optimizer = optim.Adam(net.parameters(), lr=0.001)
 
 print(device)

@@ -56,7 +56,7 @@ class Net(nn.Module):
         s = c_hat.size()[-1]
         for i in range(s):
             
-            k = c_hat[:,:,:,i].squeeze(-1)
+            k = c_hat[:,:,:,i].squeeze(-1).squeeze(-1)
             #print(k.size())
             y_hat_2 = self.fd(k)
             voice_MSE = F.mse_loss(y, y_hat_2)/s

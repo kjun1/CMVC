@@ -62,7 +62,7 @@ class UttrDecoder(nn.Module):
     def uttr_sample_z(self, mean, log_var):
 
         device = self._device()
-        epsilon = torch.randn(mean.shape).to(device)
+        epsilon = torch.randn(mean.shape, dtype=torch.float32).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, z, c):
@@ -133,7 +133,7 @@ class FaceDecoder(nn.Module):
         顔面の潜在変数出すやつ
         """
         device = self._device()
-        epsilon = torch.randn(mean.shape).to(device)
+        epsilon = torch.randn(mean.shape, dtype=torch.float32).to(device)
         return mean + torch.exp(log_var) * epsilon
 
     def forward(self, y):

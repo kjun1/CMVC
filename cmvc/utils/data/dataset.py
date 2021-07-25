@@ -28,13 +28,14 @@ class PairDataset(torch.utils.data.Dataset):
         self.voice_file = list(itertools.chain.from_iterable([[j for j in i.iterdir()] for i in voice_dir]))
         
         self.voice_data = [pd.read_pickle(i) for i in self.voice_file]
+        self.voice_data_mc = [i.mc for i in self.voice_data]
         self.voice_label = [1 if "M" == str(i.parent)[-2] else -1 for i in self.voice_file]
         
-        k = np.concatenate(self.voice_data,axis=1)
+        k = np.concatenate(self.voice_data_mc,axis=0)
         self.voice_transform = transform.VoiceTrans(k.max(), k.min())
         
         
-        self.voice_data = [torch.tensor([[self.voice_transform(i)]], dtype=torch.float32) for i in self.voice_data]
+        self.voice_data_mc = [torch.tensor([[self.voice_transform(i)]], dtype=torch.float32) for i in self.voice_data_mc]
         
         
         
@@ -56,7 +57,7 @@ class PairDataset(torch.utils.data.Dataset):
         
     
     
-        self.datanum = len(self.voice_data)
+        self.datanum = len(self.voice_data_mc)
     
     
     
@@ -66,7 +67,7 @@ class PairDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx, k=2):
         
         d = self.voice_file[idx]
-        out_voice_data = self.voice_data[idx]
+        out_voice_data = self.voice_data_mc[idx]
         out_label = self.voice_label[idx]
         
         if out_label == 1:
@@ -76,7 +77,7 @@ class PairDataset(torch.utils.data.Dataset):
         
         out_image_data = torch.stack([self.image_data[i] for i in c])
         
-        print(c)
-        print(d)
+        #print(c)
+        #print(d)
 
         return out_voice_data, out_image_data, out_label
